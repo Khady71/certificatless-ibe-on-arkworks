@@ -38,7 +38,7 @@ reference IBE implementations on this curve.
 The accompanying note describing the implementation, the Type-1 to Type-3 
 adaptation, and deployment considerations is available in this repository.
 
-📄 [`cl_pke_note.pdf`](./cl_pke_note.pdf)
+📄 [`cl_pke_note_kg.pdf`](./cl_pke_note_kg.pdf)
 
 ## Usage
 
