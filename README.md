@@ -4,7 +4,7 @@ A Rust implementation of the Certificateless Public-Key Encryption (CL-PKE)
 scheme proposed by Cheng and Comley (2005), built on top of the 
 [arkworks-rs](https://github.com/arkworks-rs) ecosystem over the BLS12-381 curve.
 
-> ⚠️ **WARNING**: This is an academic proof-of-concept prototype. It has not 
+>**WARNING**: This is an academic proof-of-concept prototype. It has not 
 > received careful code review and is **NOT ready for production use**.
 
 ## Overview
@@ -12,8 +12,8 @@ scheme proposed by Cheng and Comley (2005), built on top of the
 Identity-Based Encryption (IBE) allows encrypting to a recipient using their 
 identity as a public key, but suffers from a key escrow problem: the Key 
 Generation Center (KGC) holds all private keys. Certificateless PKE addresses 
-this by splitting the private key into two parts — one issued by the KGC, one 
-chosen by the user — such that neither alone is sufficient for decryption.
+this by splitting the private key into two parts, one issued by the KGC, one 
+chosen by the user, such that neither alone is sufficient for decryption.
 
 This implementation covers the five algorithms of the Cheng-Comley CL-PKE 
 scheme: `Setup`, `Extract`, `Publish`, `Encrypt`, and `Decrypt`. The scheme 
@@ -32,6 +32,13 @@ reference IBE implementations on this curve.
 - **Reference for practitioners**: this repo is intended as a starting point 
   for engineers wishing to implement certificateless cryptography on modern 
   pairing-friendly curves using arkworks.
+
+## Paper
+
+The accompanying note describing the implementation, the Type-1 to Type-3 
+adaptation, and deployment considerations is available in this repository.
+
+📄 [`cl_pke_note.pdf`](./cl_pke_note.pdf)
 
 ## Usage
 
