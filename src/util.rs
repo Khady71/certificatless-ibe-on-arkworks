@@ -32,6 +32,12 @@ pub fn rand_g2<R: Rng+CryptoRng>(rng: &mut R) -> G2{
     G2::rand(rng)
 }
 
+pub fn rand_sigma<R: Rng+CryptoRng>(rng: &mut R) -> [u8; 32]{
+    let mut sigma = [0u8; 32];
+    rng.fill(&mut sigma);
+    sigma
+}
+
 pub fn h1_to_g2(id:&[u8]) -> Result<G2Affine, HashToCurveError>{
     let g2_mapper = MapToCurveBasedHasher::<
         G2Projective,
@@ -66,7 +72,7 @@ pub fn h2(
 
 }
 
-pub fn h3(sigma: &[u8;32], message: &[u8]) -> Fr{
+pub fn h3(sigma: &[u8;32], message: &[u8;32]) -> Fr{
     let mut hasher = Sha256::new();
 
     hasher.update(H3_DST);
