@@ -40,32 +40,7 @@ adaptation, and deployment considerations is available in this repository.
 
 📄 [`cl_pke_note_kg.pdf`](./cl_pke_note_kg.pdf)
 
-## Usage
 
-```rust
-use cl_pke::{setup, extract, publish, encrypt, decrypt};
-use rand::thread_rng;
-
-let rng = &mut thread_rng();
-
-// Setup
-let (pk, msk) = setup(rng);
-
-// Extract partial private key for an identity
-let id = b"alice@example.com";
-let d_a = extract(&pk, &msk, id);
-
-// User generates their own secret and public key
-let (usk, upk) = publish(rng, &pk);
-
-// Encrypt a 32-byte message
-let message = b"hello, certificateless world!!!";
-let ct = encrypt(rng, message, id, &pk, &upk);
-
-// Decrypt
-let plaintext = decrypt(&pk, &d_a, &usk, &ct);
-assert_eq!(plaintext, message);
-```
 
 ## Code Organisation
 src/
