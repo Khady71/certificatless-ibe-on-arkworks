@@ -3,12 +3,9 @@ use ark_bls12_381::{G1Projective as G1, G2Projective as G2, G1Affine, G2Affine, 
 use ark_ec::{pairing::Pairing, pairing::PairingOutput, AffineRepr, CurveGroup};
 use ark_std::UniformRand;
 use rand::{CryptoRng, Rng};
-// use group::Group;
 
 mod util;
 use util::{rand_scalar, rand_g1, rand_g2, G1_SERIALIZED_SIZE, G2_SERIALIZED_SIZE, h1_to_g2, h2, h3, h4, rand_sigma};
-
-
 
 
 pub const  n: usize = 256;
@@ -40,7 +37,7 @@ pub struct UserPublicKey{
     n_a:G1Affine,
 }
 
-// type Msg = Gt;
+
 
 
 #[derive(Clone, Debug)]
@@ -166,13 +163,7 @@ impl CLIBE {
         let f_prime_affine:G1Affine = f_prime.into_affine();
 
         let h2_result:[u8;32] = h2(&cipher.u, &g_prime, &f_prime_affine);
-        // dans decrypt, AVANT le calcul de sigma_prime
-        // println!("--- DECRYPT ---");
-        // println!("cipher.u        = {:?}", cipher.u);
-        // println!("g_prime         = {:?}", g_prime);
-        // println!("f_prime_affine  = {:?}", f_prime_affine);
-        // println!("h2_result (dec) = {:?}", h2_result);
-        // println!("h4_result (dec) = {:?}", h4_result);
+    
         let mut sigma_prime:[u8;32] = [0u8; 32];
         for i in 0..32{
             sigma_prime[i]= cipher.v[i]^h2_result[i];
@@ -187,22 +178,11 @@ impl CLIBE {
         let r_prime:Fr = h3(&sigma_prime, &message_prime);
 
         let r_prime_p:G1 = pk.p * r_prime;
-        println!("sigma_prime = {:?}", sigma_prime);
-        println!("message_prime = {:?}", message_prime);
-        println!("cipher.u = {:?}", cipher.u);
-        println!("r_prime_p = {:?}", r_prime_p.into_affine());
+      
 
        if cipher.u != r_prime_p.into_affine() {
             return Err(DecryptError::InvalidCiphertext);
         }
-        // println!("--- DECRYPT ---");
-        // println!("cipher.u      = {:?}", cipher.u);
-        // println!("g_prime       = {:?}", g_prime);
-        // println!("f_prime_affine= {:?}", f_prime_affine);
-        // println!("h2_result     = {:?}", h2_result);
-        // println!("h4_result     = {:?}", h4_result);
-        // println!("sigma_prime   = {:?}", sigma_prime);
-        // println!("message_prime = {:?}", message_prime);
         Ok(message_prime)
 
     }
@@ -233,7 +213,7 @@ mod tests {
         let mut rng = thread_rng();
         let (pk, msk) = CLIBE::setup(&mut rng);
         
-        // P_pub doit égaler s·P
+        
         let recomputed = (pk.p.into_group() * msk.s).into_affine();
         assert_eq!(pk.p_pub, recomputed, "P_pub should equal s·P");
     }
