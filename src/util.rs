@@ -38,6 +38,8 @@ pub fn rand_sigma<R: Rng+CryptoRng>(rng: &mut R) -> [u8; 32]{
     sigma
 }
 
+// Hash to curve : maps an arbitrary identity string to a point in G2
+// H1 : {0, 1}* -> G2
 pub fn h1_to_g2(id:&[u8]) -> Result<G2Affine, HashToCurveError>{
     let g2_mapper = MapToCurveBasedHasher::<
         G2Projective,
@@ -49,6 +51,8 @@ pub fn h1_to_g2(id:&[u8]) -> Result<G2Affine, HashToCurveError>{
     Ok(q_A)
 }
 
+// Hash to bitstring takes a tuple (U, g^r, f) ∈ G1 x Gt x G1 and produces an n-byte mask
+// H2 : G1 x Fr x G1 -> {0,1}^n
 pub fn h2(
     u: &G1Affine,
     g_r: &PairingOutput<Bls12_381>,
@@ -72,6 +76,8 @@ pub fn h2(
 
 }
 
+// Hash to scalar maps a tuple (σ,m) ∈ {0,1}^n x {0,1}^n to a scalar r ∈ Zq
+// H3 : {0,1}^n x {0,1}^n -> Zq*
 pub fn h3(sigma: &[u8;32], message: &[u8;32]) -> Fr{
     let mut hasher = Sha256::new();
 
@@ -85,6 +91,8 @@ pub fn h3(sigma: &[u8;32], message: &[u8;32]) -> Fr{
 
 }
 
+// Hash to bitstring mask the plaintext 
+// H3 : {0,1}^n -> {0,1}^n 
 pub fn h4(sigma: &[u8; 32]) -> [u8; 32]{
     let mut hasher = Sha256::new();
 
